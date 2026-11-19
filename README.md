@@ -26,9 +26,11 @@ It uses a Bash function and a Python helper to monitor the real `sudo` process t
 
 ## Installation
 
-Download the latest `sudo-roast.deb` from the [GitHub Releases](https://github.com/pBali9999/sudo-roast/releases) page.
+Download the Debian installer: [**sudo-roast.deb**](https://github.com/pBali9999/sudo-roast/releases/latest/download/sudo-roast.deb).
 
-Install it with:
+See the [GitHub Releases](https://github.com/pBali9999/sudo-roast/releases) page for release notes and version history.
+
+Install it from the directory where you downloaded it:
 
 ```bash
 sudo apt install ./sudo-roast.deb
