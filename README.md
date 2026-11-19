@@ -2,49 +2,47 @@
 
 **Because even `sudo` deserves a sense of humor.**
 
-`sudo-roast` is a small Linux hobby project that adds a randomly selected insult after an incorrect `sudo` password attempt. It uses a Bash function as a wrapper and a Python helper to watch the real `sudo` process through a pseudo-terminal.
+`sudo-roast` is a small Linux hobby project that displays a randomly selected insult after an incorrect `sudo` password attempt.
 
-The real `sudo` program still handles authentication and executes the requested command.
+It uses a Bash function and a Python helper to monitor the real `sudo` process through a pseudo-terminal (PTY). The real `sudo` program remains responsible for authentication and command execution.
 
 ## Features
 
 - Random insults after detected authentication failures
 - Built-in insults and user-defined insults
 - Option to disable built-in insults
-- Customizable insult list in a per-user configuration file
+- Customizable insult list
 - Red-colored insult messages
 - Preserves the real `sudo` command's exit status
 - Passes non-interactive invocations directly to `sudo`
+- Debian package installation and removal
 
 ## Requirements
 
-- Linux
+- Debian or Ubuntu-based Linux
 - Bash
 - Python 3
-- `sudo`
+- sudo
 
 ## Installation
 
-Clone the repository into your home directory:
+Download the latest `sudo-roast.deb` from the [GitHub Releases](https://github.com/pBali9999/sudo-roast/releases) page.
+
+Install it with:
 
 ```bash
-git clone https://github.com/pBali9999/sudo-roast.git ~/sudo-roast
-cd ~/sudo-roast
+sudo apt install ./sudo-roast.deb
 ```
 
-Make sure the scripts are present, then load the Bash wrapper in your current shell:
+Open a new interactive Bash terminal. The package automatically enables the Bash integration.
+
+You can verify that the wrapper is loaded with:
 
 ```bash
-source ~/sudo-roast/roast.sh
+type sudo
 ```
 
-To load it automatically in new interactive Bash sessions, add this line to the end of `~/.bashrc`:
-
-```bash
-source "$HOME/sudo-roast/roast.sh"
-```
-
-The wrapper only applies to Bash shells where `roast.sh` has been sourced. It does not replace the system `sudo` executable.
+It should report that `sudo` is a function.
 
 ## Configuration
 
@@ -68,7 +66,7 @@ Your keyboard is disappointed in you.
 That password needs some work.
 ```
 
-Lines beginning with `#` are comments.
+Lines beginning with `#` are comments. Blank lines are ignored.
 
 ### Built-in insults
 
@@ -94,13 +92,13 @@ Maybe try remembering your password.
 The keyboard isn't the problem.
 ```
 
-When built-ins are disabled and there are no custom insults, no insult is displayed.
+The setting also accepts `false`, `off`, or `0` to disable built-in insults. Other values enable them.
 
-The setting also accepts `false`, `off`, or `0` as off; other values enable built-ins.
+When built-ins are disabled and there are no custom insults, no insult is displayed.
 
 ## Usage
 
-Use `sudo` as usual after sourcing the wrapper:
+Use `sudo` as usual:
 
 ```bash
 sudo apt update
@@ -108,31 +106,46 @@ sudo whoami
 sudo nano /etc/hosts
 ```
 
-To force a new password prompt while testing, run:
+To force a new password prompt while testing:
 
 ```bash
 sudo -k
 sudo true
 ```
 
-Enter an incorrect password to trigger a roast. A successful authentication runs the requested command normally.
+Enter an incorrect password to trigger a roast. Successful authentication runs the requested command normally.
 
 ## How it works
 
-1. The Bash function named `sudo` forwards its arguments to the Python helper.
-2. The helper locates and launches the real `sudo` executable.
-3. For interactive use, Python runs `sudo` in a pseudo-terminal (PTY) and monitors its output.
+1. A Bash function named `sudo` forwards arguments to the Python helper.
+2. The helper launches the real `/usr/bin/sudo` executable.
+3. For interactive use, Python runs sudo in a pseudo-terminal and monitors its output.
 4. When it detects a known authentication-failure message, it prints a random configured insult.
+5. Non-interactive invocations are passed directly to the real sudo executable.
 
-For non-interactive input, the helper executes the real `sudo` directly.
+## Uninstallation
+
+Remove the package with:
+
+```bash
+sudo apt remove sudo-roast
+```
+
+To remove the package and its package-managed configuration files:
+
+```bash
+sudo apt purge sudo-roast
+```
+
+Your personal insult configuration in `~/.config/sudo-roast/` is not removed automatically.
 
 ## Limitations
 
-- The wrapper must be sourced in the Bash session where you want to use it.
-- Other shells, scripts, or commands that bypass the Bash function are not intercepted.
-- Authentication messages can vary between `sudo` implementations and versions; detection depends on matching known failure messages.
-- This is a fun wrapper, not a replacement for `sudo` or a security tool.
+- The automatic integration is for interactive Bash sessions.
+- Other shells and scripts that bypass the Bash function are not intercepted.
+- Authentication messages can vary between sudo implementations and versions; detection depends on matching known failure messages.
+- This is a fun wrapper, not a replacement for sudo or a security tool.
 
 ## License
 
-No license has been specified yet. Until a license is added to the repository, the default copyright rules apply.
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
