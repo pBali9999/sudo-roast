@@ -1,0 +1,10 @@
+Package: sudo-roast
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: all
+Depends: python3, sudo, bash
+Maintainer: Balázs Pető <noreply@example.com>
+Description: Custom humorous insults for incorrect sudo passwords
+ A lightweight Bash wrapper around sudo that displays random insults
+ when authentication fails.

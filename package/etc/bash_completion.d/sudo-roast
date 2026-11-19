@@ -1,0 +1,3 @@
+sudo () {
+	command python3 /usr/lib/sudo-roast/roast.py "$@"
+}

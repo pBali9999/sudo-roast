@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+MARKER="# sudo-roast: automatic Bash integration"
+
+if ! grep -Fq "$MARKER" /etc/bash.bashrc; then
+	cat >> /etc/bash.bashrc <<'EOF'
+
+# sudo-roast: automatic Bash integration
+if [ -n "$BASH_VERSION" ] && [[ $- == *i* ]] && [ -f /etc/bash_completion.d/sudo-roast ]; then
+	source /etc/bash_completion.d/sudo-roast
+fi
+EOF
+fi
+
+exit 0

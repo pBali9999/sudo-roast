@@ -3,7 +3,6 @@
 import os
 import pty
 import sys
-import shutil
 import random
 import re
 from pathlib import Path
@@ -65,7 +64,7 @@ RED = b"\x1b[1;31m"
 RESET = b"\x1b[0m"
 
 def main():
-	sudo_path = shutil.which("sudo")
+	sudo_path = "/usr/bin/sudo"
 
 	if sudo_path is None:
 		print("sudo-roast: could not find sudo", file=sys.stderr)
